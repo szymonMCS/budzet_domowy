@@ -1,0 +1,76 @@
+p{
+  margin-bottom: 0 !important;
+}
+
+h1, h2, h3{
+  font-family: "Castoro", serif !important;\font-family: "Castoro", serif !important;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.container h1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.powitanie h3 {
+  font-size: 15px;
+}
+
+.col {
+  height: 350px;
+  flex: 1;
+}
+
+.col img {
+  margin-bottom: 50px;
+}
+
+.card {
+  height: 100%;
+}
+
+.row {
+  display: flex;
+}
+
+h1 span {
+  font-size: 28px;
+  font-weight: 500;
+}
+
+#main-name{
+  margin-top: 15px;
+}
+
+.nav-item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.navbar-nav{
+  gap: 20px;
+}
+
+.dropdown-flex{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
