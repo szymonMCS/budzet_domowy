@@ -1,3 +1,12 @@
+<?php
+	session_start();
+	
+	if((!isset($_SESSION['loggedIn']))){
+		header('Location: index.php');
+		exit();
+	}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,19 +16,18 @@
   <title>Budżet domowy</title>
 
   <link rel="icon" type="image/png" sizes="32x32" href="./images/icons/coin.svg">
-  <link rel="stylesheet" href="registerStyle.css"> 
+  <link rel="stylesheet" href="mainStyle.css"> 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
   <header class="container">
     <div class="d-flex flex-wrap justify-content-between py-3 border-bottom">
       <div>
-        <a href="http://127.0.0.1:3000/mainPage.html" class="d-flex align-items-center mb-3 mb-md-0 me-2 link-body-emphasis text-decoration-none">
+        <a href="mainPage.php" class="d-flex align-items-center mb-3 mb-md-0 me-2 link-body-emphasis text-decoration-none">
           <img src="./images/icons/swinka-domek-tlo.png" class="bi me-2" width="80" height="80"></img>
           <h1 id="main-name">
             <span>Mój</span>
@@ -32,7 +40,7 @@
         <ul class="nav nav-pills align-content-center me-2">
           <li class="nav-item me-1">
             <p class="me-1">Zalogowany jako</p> 
-            <a class="ms-1" href="#"  aria-current="page">ktostam</a></li>
+            <a class="ms-1" href="#"  aria-current="page"><?= $_SESSION['username'] ?></a></li>
         </ul>
   
         <div class="flex-shrink-0 dropdown ms-2">
@@ -51,7 +59,7 @@
             <li><hr class="dropdown-divider"></li>
             <li class="dropdown-flex">
               <img src="./images/icons/power.svg" alt="house" width="20" height="20">
-              <a class="dropdown-item" href="#">Wyloguj</a>
+              <a class="dropdown-item" href="logout.php">Wyloguj</a>
             </li>
           </ul>
         </div>
@@ -67,23 +75,19 @@
           </button>
   
           <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample10">
-            <ul class="navbar-nav align-items-center" >
+            <ul class="navbar-nav align-items-center">
               <li class="nav-item">
-                <a class="nav-link ps-3" href="http://127.0.0.1:3000/mainPage.html"><img class="me-2" src="./images/icons/domek.png" alt="house" width="30" height="25">Strona główna</a>
+                <a class="nav-link ps-3" href="mainPage.php"><img class="me-2" src="./images/icons/domek.png" alt="house" width="30" height="25">Strona główna</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link ps-3" href="http://127.0.0.1:3000/income.html"><img class="me-2" src="./images/icons/plus.png" alt="plus icon" width="25" height="24">Dodaj przychód</a>
+                <a class="nav-link ps-3" href="incomes.php"><img class="me-2" src="./images/icons/plus.png" alt="plus icon" width="25" height="24">Dodaj przychód</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link ps-3" href="http://127.0.0.1:3000/outcome.html">
-                  <img class="me-2" src="./images/icons/minus.png" alt="minus icon" width="26" height="30">                  
-                  Dodaj wydatek</a>
+                <a class="nav-link ps-3" href="outcomes.php"><img class="me-2" src="./images/icons/minus.png" alt="minus icon" width="26" height="30">Dodaj wydatek</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link ps-3" href="http://127.0.0.1:3000/balance.html"><img class="me-2" src="./images/icons/wykres.png" alt="bar diagram" width="30" height="30">Przedstaw bilans</a>
+                <a class="nav-link ps-3" href="balance.php"><img class="me-2" src="./images/icons/wykres.png" alt="bar diagram" width="30" height="30">Przedstaw bilans</a>
               </li>
-              
-              
             </ul>
           </div>
         </div>
@@ -93,70 +97,54 @@
   </header>
 
   <main>
-    <div class="container col-xl-10 col-xxl-8 px-4 py-5 d-flex justify-content-center">
-        <div class="card mb-4 rounded-3 shadow-sm mainCard">
-          <div class="card-header py-3">
-            <h4 id="rejestracja" class="my-0 fw-normal text-center">DODAJ PRZYCHÓD</h4>
-          </div>
-            <form class="p-4 p-md-5 border rounded-3 .bg-light-subtle">
 
-              <div class="col-auto">
-                <label class="visually-hidden" for="autoSizingInputGroup">Kwota</label>
-                <div class="input-group">
-                  <div class="input-group-text"><img src="./images/icons/currency-dollar.svg" alt="dollar" width="25" height="20">
-                  </div>
-                  <span class="input-group-text">0.00</span>
-                  <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="Wpisz kwote..">
-                </div>
-              </div>
+    <section class="container mt-4 powitanie">
+      <h2>Cześć <?= $_SESSION['username'] ?></h2>
+      <h3>pora rzucic okiem twoje finanse!</h3>
+    </section>
+      
 
-              <div class="col-auto">
-                <label for="floatingDate"></label>
-                <div class="input-group">
-                  <div class="input-group-text"><img src="./images/icons/calendar3.svg" alt="calendar" width="25" height="20">
-                  </div>
-                  <input type="date" class="form-control" id="floatingDate" placeholder="Data">
-                </div>             
-              </div>
+    <section class="container">
 
-              <div class="col-auto">
-                <label for="floatingCategory"></label>
-                <div class="input-group">
-                  <div class="input-group-text"><img src="./images/icons/puzzle.svg" alt="locker" width="25" height="20">
-                  </div>
-                  <select class="form-select" id="floatingCategory" aria-label="Floating label select example">
-                    <option selected>Wybierz kategorię...</option>
-                    <option value="1">Wynagrodzenie</option>
-                    <option value="2">Odsetki bankowe</option>
-                    <option value="3">Sprzedaż na allegro</option>
-                    <option value="3">Inne</option>
-                  </select>
-                </div>             
-              </div>
-
-              <div class="mb-3 mt-4">
-                <label for="exampleFormControlTextarea1" class="form-label">Komentarz (opcjonalnie)</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-              </div>
-
-
-
-
-              <div class="w-40 btn btn-lg btn-success mt-4">
-                <a href="http://127.0.0.1:3000/ZZZ_budzet domowy/login.html" class="nav-link active" aria-current="page">Dodaj
+      <div class="row row-cols-1 row-cols-md-3 mb-3  mt-5 pt-4 text-center">
+        <div class="col d-flex align-items-stretch justify-content-center">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="modal-body p-4">      
+              <img src="./images/icons/plus.png" alt="plus icon" width="120" height="120">
+              <div class="w-100 btn btn-lg btn-outline-primary">
+                <a href="incomes.php" class="nav-link active" aria-current="page">Dodaj przychód
                 </a>
               </div>
-              <div class="w-40 btn btn-lg btn-danger mt-4">
-                <a href="http://127.0.0.1:3000/ZZZ_budzet domowy/login.html" class="nav-link active" aria-current="page">Anuluj
-                </a>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
-    </div>
+        <div class="col d-flex align-items-stretch justify-content-center">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="modal-body p-4">      
+              <img src="./images/icons/minus.png" alt="plus icon" width="120" height="120">
+              <div class="w-100 btn btn-lg btn-outline-primary">
+                <a href="outcomes.php" class="nav-link active" aria-current="page">Dodaj wydatek
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>  
+        <div class="col d-flex align-items-stretch justify-content-center">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="modal-body p-4">      
+              <img src="./images/icons/wykres.png" alt="plus icon" width="150" height="120">
 
+              <div class="w-100 btn btn-lg btn-outline-primary">
+                <a href="balance.php" class="nav-link active" aria-current="page">Pokaż bilans
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
-  
+
   <footer>
     <div class="container mt-4 pt-4">
       <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
@@ -175,10 +163,6 @@
       </footer>
     </div>
   </footer>
-      
-   
-  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <script src="income.js" charset="utf-8"></script>
 </body>
 </html>

@@ -1,0 +1,5 @@
+# Enable RewriteEngine
+RewriteEngine On
+
+# Allow POST methods
+RewriteCond %{REQUEST_METHOD} ^(GET|POST|PUT|DELETE|HEAD|OPTIONS)$

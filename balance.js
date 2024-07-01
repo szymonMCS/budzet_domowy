@@ -1,16 +1,55 @@
-$(function() {
-    var start = moment().subtract(29, 'days');
-    var end = moment();
+$(document).ready(function(){
+	
+	var start;
+    var end;
+	var savedDate = localStorage.getItem('selectedDate');
+	var firstVisit = localStorage.getItem('firstVisit');
+	var defaultName = 'Dzisiaj';
+	var name = "";
+	var dowolnaData = "Wybrany okres";
 
-    function cb(start, end) {
-        $('#reportrange span').html(start.format('D/MM/ YYYY') + ' - ' + end.format('D/MM/YYYY'));
+    if (!firstVisit) {
+        start = moment();
+        end = moment();
+		console.log("1");
+        localStorage.setItem('firstVisit', 'true');
+        localStorage.setItem('selectedDate', start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY'));
+		localStorage.setItem('selectedName', defaultName);
+    } else if (savedDate) {
+        var dates = savedDate.split(' - ');
+        start = moment(dates[0], 'DD.MM.YYYY');
+        end = moment(dates[1], 'DD.MM.YYYY');
+    } else {
+        start = moment();
+        end = moment();
+    }
+	
+	var dateValue;
+	
+	function updateNameOfPeriod(chosenOption) {
+        $("#nameOfPeriod").text(chosenOption);
+        name = $("#nameOfPeriod").text();
+        $("#balancePeriod").text(name);
+        localStorage.setItem('selectedName', chosenOption);
+    }
+	
+	function updateSelectedDate() {
+        var previousDateValue = localStorage.getItem('selectedDate');
+        dateValue = dateValue || $("#reportrange span").text();
+        if (dateValue !== previousDateValue) {
+            sendDateToServer(dateValue);
+        }
+    }
+	
+	function cb(start, end) {
+        $('#reportrange span').html(start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY'));
+		dateValue = start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY');
+		updateSelectedDate();
     }
 
     $('#reportrange').daterangepicker({
         startDate: start,
         endDate: end,
-        
-        
         ranges: {
             'Dzisiaj': [moment(), moment()],
             'Wczoraj': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -19,16 +58,16 @@ $(function() {
             'Ten miesiąc': [moment().startOf('month'), moment().endOf('month')],
             'Poprzedni miesiąc': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
-        "locale": {
-            "format": "D MMMM YYYY",
-            "separator": " - ",
-            "applyLabel": "Zatwierdź",
-            "cancelLabel": "Anuluj",
-            "fromLabel": "Od",
-            "toLabel": "Do",
-            "customRangeLabel": "Dowolna",
-            "weekLabel": "W",
-            "daysOfWeek": [
+        locale: {
+            format: "DD.MM.YYYYY",
+            separator: " - ",
+            applyLabel: "Zatwierdź",
+            cancelLabel: "Anuluj",
+            fromLabel: "Od",
+            toLabel: "Do",
+            customRangeLabel: "Dowolna",
+            weekLabel: "W",
+            daysOfWeek: [
                 "Ni",
                 "Po",
                 "Wt",
@@ -37,7 +76,7 @@ $(function() {
                 "Pt",
                 "So"
             ],
-            "monthNames": [
+            monthNames: [
                 "Styczeń",
                 "Luty",
                 "Marzec",
@@ -51,65 +90,81 @@ $(function() {
                 "November",
                 "December"
             ],
-            "firstDay": 1
+            firstDay: 1
         },
-        "alwaysShowCalendars": true,
-    }, cb);
+        alwaysShowCalendars: true,
+    }, cb)	
 
     cb(start, end);
-});
+	
+	var savedName = localStorage.getItem('selectedName') || defaultName;
+    updateNameOfPeriod(savedName);
+	
+	function sendDateToServer(dateValue) {
+		console.log('Sending date to server: ' + dateValue);
+		localStorage.setItem('selectedDate', dateValue);
 
-$(document).ready(function(){
-    $(".ranges ul li").click(function(){
+		$.ajax({
+			type: "POST",
+			url: "/mojbudzet/balance.php",
+			data: { dateValue: dateValue },
+			success: function(response) {
+				console.log('Odebrany tekst: ' + response);
+				location.reload();
+			},
+			error: function(xhr, status, error) {
+				console.error('Error:', xhr.status, status, error);
+			}
+		});
+	}
+
+    $(".ranges ul li").click(function() {
         var chosenOption = $(this).text();
-        $("#nameOfPeriod").text(chosenOption);
-        console.log(this);
-        console.log(chosenOption);
-    });  
-    
-    $(".applyBtn.btn.btn-sm.btn-primary").click(function(){
-        $("#nameOfPeriod").text("Wybrany okres");
-        console.log(this);
+        updateNameOfPeriod(chosenOption);
+        setTimeout(updateSelectedDate, 500);
     });
-});
 
-
-$(document).ready(function () {
-
-  var name = "";
-
-  $(".ranges ul li").click(function(){
-      name = $("#nameOfPeriod").text();
-      console.log(name);
-      $("#balancePeriod").text(name);
-  });
-
-  $(".applyBtn.btn.btn-sm.btn-primary").click(function(){
-    name = $("#reportrange span").text();
-    console.log(name);
-    $("#balancePeriod").text(name);
-});
-      
-});
+    $(".applyBtn.btn.btn-sm.btn-primary").click(function() {
+        name = $("#reportrange span").text();
+        updateNameOfPeriod(dowolnaData);
+        setTimeout(updateSelectedDate, 500);
+    });
+	
+}); 
 
 function calculateBalance(){
-    var earnings = parseFloat($("#sumOne").text());
-    var expenses = parseFloat($("#sumTwo").text());
+	var earnings = 0;
+    var expenses = 0;
+	
+	if($("#sumOne").text().trim() !== ""){
+		earnings = parseFloat($("#sumOne").text());
+		if (isNaN(earnings)) {
+            earnings = 0;
+        }
+	}
+	
+	if ($("#sumTwo").text().trim() !== "") {
+        expenses = parseFloat($("#sumTwo").text());
+        if (isNaN(expenses)) {
+            expenses = 0;
+        }
+    }
+    
     var sum = earnings + expenses;
 
 
     if(sum < 0){
-        $("#balanceSum").text(sum.toFixed(2));
+        $("#balanceSum").text(sum.toFixed(2) + " zł");
         $("#balanceSum").css("color", "red");
         $("#balanceDescription").text("Uważaj na wydatki, jesteś na minusie");
     }
     else if(sum === 0){
-        $("#balanceSum").text(sum.toFixed(2));
+        $("#balanceSum").text(sum.toFixed(2) );
         $("#balanceSum").css("color", "black");
         $("#balanceDescription").text("Jesteś na zero");
     }
     else{
-        $("#balanceSum").text("+" + sum.toFixed(2));
+        $("#balanceSum").text("+" + sum.toFixed(2) + " zł");
         $("#balanceSum").css("color", "green");
         $("#balanceDescription").text("Super, zaczynasz oszczędzać");
     }
@@ -118,26 +173,26 @@ function calculateBalance(){
 
 function sliceSize(dataNum, dataTotal) {
     return (dataNum / dataTotal) * 360;
-  }
+}
   
-  function addSlice(id, sliceSize, pieElement, offset, sliceID, color) {
-    $(pieElement).append(
-      "<div class='slice " + sliceID + "'><span></span></div>"
-    );
-    var offset = offset - 1;
-    var sizeRotation = -179 + sliceSize;
+function addSlice(id, sliceSize, pieElement, offset, sliceID, color) {
+	$(pieElement).append(
+	  "<div class='slice " + sliceID + "'><span></span></div>"
+	);
+	var offset = offset - 1;
+	var sizeRotation = -179 + sliceSize;
+
+	$(id + " ." + sliceID).css({
+	  transform: "rotate(" + offset + "deg) translate3d(0,0,0)"
+	});
+
+	$(id + " ." + sliceID + " span").css({
+	  transform: "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
+	  "background-color": color
+	});
+}
   
-    $(id + " ." + sliceID).css({
-      transform: "rotate(" + offset + "deg) translate3d(0,0,0)"
-    });
-  
-    $(id + " ." + sliceID + " span").css({
-      transform: "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
-      "background-color": color
-    });
-  }
-  
-  function iterateSlices(
+function iterateSlices(
     id,
     sliceSize,
     pieElement,
@@ -163,27 +218,27 @@ function sliceSize(dataNum, dataTotal) {
         color
       );
     }
-  }
+}
   
-  function createPie(id) {
-    var listData = [],
-      listTotal = 0,
-      offset = 0,
-      i = 0,
-      pieElement = id + " .pie-chart__pie";
-    dataElement = id + " .pie-chart__legend";
-  
-    color = [
-      "cornflowerblue",
-      "olivedrab",
-      "orange",
-      "tomato",
-      "crimson",
-      "purple",
-      "turquoise",
-      "forestgreen",
-      "navy"
-    ];
+function createPie(id) {
+	var listData = [],
+	  listTotal = 0,
+	  offset = 0,
+	  i = 0,
+	  pieElement = id + " .pie-chart__pie";
+	dataElement = id + " .pie-chart__legend";
+
+	color = [
+	  "cornflowerblue",
+	  "olivedrab",
+	  "orange",
+	  "tomato",
+	  "crimson",
+	  "purple",
+	  "turquoise",
+	  "forestgreen",
+	  "navy"
+	];
   
     color = shuffle(color);
   
@@ -204,9 +259,9 @@ function sliceSize(dataNum, dataTotal) {
       );
       offset += size;
     }
-  }
+}
   
-  function shuffle(a) {
+function shuffle(a) {
     var j, x, i;
     for (i = a.length; i; i--) {
       j = Math.floor(Math.random() * i);
@@ -216,17 +271,17 @@ function sliceSize(dataNum, dataTotal) {
     }
   
     return a;
-  }
+}
   
-  function createPieCharts() {
+function createPieCharts() {
     createPie(".pieID--przychody");
     createPie(".pieID--wydatki");
-  }
+}
   
-  createPieCharts();
+createPieCharts();
 
-  calculateBalance();
-  
+calculateBalance();
+
 
 
   
