@@ -1,3 +1,10 @@
+<?php
+	session_start();
+	if((isset($_SESSION['loggedIn'])) && ($_SESSION['loggedIn'] == true)){
+		header('Location: mainPage.php');
+		exit();
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +14,7 @@
   <title>Budżet domowy</title>
 
   <link rel="icon" type="image/png" sizes="32x32" href="./images/icons/coin.svg">
-  <link rel="stylesheet" href="registerStyle.css"> 
+  <link rel="stylesheet" href="welcomeStyle.css"> 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
@@ -17,7 +24,7 @@
 
   <header class="container">
     <div class="d-flex flex-wrap justify-content-between py-3 border-bottom">
-      <a href="http://127.0.0.1:3000/welcomePage.html" class="d-flex align-items-center mb-3 mb-md-0 me-2 link-body-emphasis text-decoration-none">
+      <a href="index.php" class="d-flex align-items-center mb-3 mb-md-0 me-2 link-body-emphasis text-decoration-none">
         <img src="./images/icons/swinka-domek-tlo.png" class="bi me-2" width="80" height="80"></img>
         <h2 id="main-name">
           <span>Mój</span>
@@ -26,49 +33,26 @@
       </a>
 
       <ul class="nav nav-pills align-content-center ms-2">
-        <li class="nav-item me-1"><a href="http://127.0.0.1:3000/ZZZ_budzet domowy/login.html" class="nav-link active" aria-current="page">Logowanie</a></li>
-        <li class="nav-item ms-1"><a href="http://127.0.0.1:3000/register.html" class="nav-link">Rejestracja</a></li>
+        <li class="nav-item me-1"><a href="logowanie.php" class="nav-link active" aria-current="page">Logowanie</a></li>
+        <li class="nav-item ms-1"><a href="rejestracja.php" class="nav-link">Rejestracja</a></li>
       </ul>
     </div>
   </header>
 
   <main>
-    <div class="container col-xl-10 col-xxl-8 px-4 py-5 d-flex justify-content-center">
-        <div class="card mb-4 rounded-3 shadow-sm mainCard">
-          <div class="card-header py-3">
-            <h4 id="rejestracja" class="my-0 fw-normal text-center">LOGOWANIE</h4>
-          </div>
-            <form class="p-4 p-md-5 border rounded-3 .bg-light-subtle">
-              
-              <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingPassword"><img src="./images/icons/envelope.svg" class="me-3" alt="envelope" width="25" height="20">E-mail</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingInput"><img src="./images/icons/lock.svg" class="me-3" alt="locker" width="25" height="20">Hasło</label>
-              </div>
-
-              <div class="w-100 btn btn-lg btn-primary mt-4">
-              <a href="http://127.0.0.1:3000/mainPage.html" class="nav-link active" aria-current="page">Zaloguj
-              </a>
-              </div>
-
-              <hr class="my-4">
-              <p class="text">Nie masz jeszcze u nas konta?</p>
-
-              <div class="w-100 btn btn-lg btn-primary mt-4">
-              <a href="http://127.0.0.1:3000/register.html" class="nav-link active" aria-current="page">Rejestracja
-              </a>
-              </div>
-
-            </form>
-          </div>
+    <div class="my-5">
+      <div class="p-5 text-center">
+        <div class="container py-5 bg-body-tertiary">
+          <h1 class="text-body-emphasis">Witaj w serwisie mój budżet</h1>
+          <p class="col-lg-8 mx-auto lead">
+            Czujesz że chcesz mieć dużo większą kontrolę nad swoimi wydatkami? Chcesz efektywniej gromadzić pieniądze na wymarzony cel? Z nami w bardzo prosty sposób możesz dodawać swoje wydatki oraz przychody, wyświetlać wyniki w przejżysty sposób w postaci raportów i wykresów.
+          </p>
         </div>
+      </div>
     </div>
   </main>
 
-  <footer>
+  <footer class="footer">
     <div class="container mt-4 pt-4">
       <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <div class="col-md-4 d-flex align-items-center">
@@ -86,9 +70,10 @@
       </footer>
     </div>
   </footer>
-  
-  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <script src="welcomeIndex.js" charset="utf-8"></script>
+<?php
+	if(isset($_SESSION['error']))
+	echo $_SESSION['error'];
+?>
 </body>
 </html>

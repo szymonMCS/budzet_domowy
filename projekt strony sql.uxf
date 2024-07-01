@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>371</y>
+      <w>161</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>KATEGORIE PRZYCHODOW
+--
+&lt;&lt;PK&gt;&gt; idkategoriiprzychodu: integer
+kategoriaprzychodu : varchar</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>518</y>
+      <w>154</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>WYDATKI
+--
+&lt;&lt;PK&gt;&gt; idwydatku: integer
+&lt;&lt;FK&gt;&gt; iduzytkownika: integer
+kwotawydatku: double
+datawydatku: date
+komentarzwydatku: varchar
+&lt;&lt;FK&gt;&gt; idsposobuplatnosci: ineger
+&lt;&lt;FK&gt;&gt; idkategoriiwydatku: integer</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>497</x>
+      <y>532</y>
+      <w>147</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>UZYTKOWNICY
+--
+&lt;&lt;PK&gt;&gt; iduzytkownika: integer
+imie: text
+email: text
+haslo: varchar
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>245</y>
+      <w>161</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>PRZYCHODY
+--
+&lt;&lt;PK&gt;&gt; idprzchodu: integer
+&lt;&lt;FK&gt;&gt; iduzytkownika: integer
+kwotaprzychodu: double
+dataprzychodu: date
+komentarzprzychodu: varchar
+&lt;&lt;FK&gt;&gt; idkategoriiprzychodu: integer
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>651</y>
+      <w>217</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>KATEGORIE WYDATKOW UZYTKOWNIKA
+--
+&lt;&lt;PK&gt;&gt; id: integer
+&lt;&lt;FK&gt;&gt; iduzytkownika: integer
+kategoriawydatku : varchar</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>287</x>
+      <y>539</y>
+      <w>224</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;20.0;60.0;20.0;300.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>889</y>
+      <w>154</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>SPOSOBY PLATNOSCI
+--
+&lt;&lt;PK&gt;&gt; idsposobuplatnosci: integer
+rodzajsposobu: varchar
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>294</x>
+      <y>273</y>
+      <w>217</w>
+      <h>301</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;10.0;210.0;400.0;290.0;400.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>294</x>
+      <y>322</y>
+      <w>112</w>
+      <h>161</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;10.0;140.0;200.0;90.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>350</x>
+      <y>546</y>
+      <w>161</w>
+      <h>161</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;200.0;130.0;200.0;130.0;10.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>441</y>
+      <w>217</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>KATEGORIE PRZYCHODOW UZYTKOWNIKA
+--
+&lt;&lt;PK&gt;&gt; id: integer
+&lt;&lt;FK&gt;&gt; iduzytkownika: integer
+kategoriaprzychodu : varchar</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>105</x>
+      <y>399</y>
+      <w>49</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=1
+</panel_attributes>
+    <additional_attributes>50.0;130.0;10.0;130.0;10.0;10.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>350</x>
+      <y>469</y>
+      <w>161</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0;130.0;120.0;210.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>735</y>
+      <w>161</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>KATEGORIE WYDATKOW
+--
+&lt;&lt;PK&gt;&gt; idkategoriiwydatku: integer
+kategoriawydatku : varchar</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>105</x>
+      <y>693</y>
+      <w>49</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=1
+</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;10.0;10.0;110.0;50.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>287</x>
+      <y>595</y>
+      <w>119</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;20.0;150.0;20.0;150.0;110.0;100.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>812</y>
+      <w>189</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>SPOSOBY PLATNOSCI UZYTKOWNIKA
+--
+&lt;&lt;PK&gt;&gt; id: integer
+&lt;&lt;FK&gt;&gt; iduzytkownika: integer
+rodzajsposobu: varchar
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>105</x>
+      <y>854</y>
+      <w>49</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=1
+</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;10.0;10.0;100.0;50.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>84</x>
+      <y>588</y>
+      <w>70</w>
+      <h>266</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=1
+</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;10.0;10.0;350.0;80.0;350.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>322</x>
+      <y>546</y>
+      <w>189</w>
+      <h>322</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;430.0;170.0;430.0;170.0;10.0;250.0;10.0</additional_attributes>
+  </element>
+</diagram>
